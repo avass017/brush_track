@@ -1,0 +1,240 @@
+{% extends "client/client.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+
+/* ================= PAGE WRAPPER ================= */
+.full-page{
+    width:100%;
+    animation:fadeIn .6s ease-in-out;
+}
+
+/* HEADER */
+.page-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:600;
+    color:#0f172a;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:#64748b;
+}
+
+/* CARD */
+.premium-table{
+    background:#fff;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.06);
+    overflow:hidden;
+    position:relative;
+}
+
+.premium-table::before{
+    content:"";
+    position:absolute;
+    height:5px;
+    width:100%;
+    left:0;
+    top:0;
+    background:linear-gradient(90deg,#3b82f6,#6366f1,#8b5cf6);
+}
+
+/* TABLE */
+.table thead th{
+    font-size:12px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    background:#f8fafc;
+    color:#475569;
+    padding:15px;
+}
+
+/* PROFILE IMAGE */
+.table-avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #e2e8f0;
+}
+
+/* Placeholder */
+.table-avatar.placeholder{
+display:flex;
+align-items:center;
+justify-content:center;
+background:#6366f1;
+color:#fff;
+font-weight:600;
+font-size:14px;
+}
+
+/* TABLE BODY */
+.table td{
+    font-size:14px;
+    color:#334155;
+    padding:15px;
+}
+
+/* HOVER */
+.table tbody tr{
+    transition:.3s;
+}
+
+.table tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* STATUS BADGE */
+.badge-active{
+    background:#dcfce7;
+    color:#16a34a;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.badge-inactive{
+    background:#fee2e2;
+    color:#dc2626;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* BUTTON */
+.request-btn{
+background:linear-gradient(135deg,#2563eb,#4f46e5);
+border:none;
+padding:6px 16px;
+border-radius:25px;
+color:white;
+font-size:12px;
+font-weight:600;
+transition:.3s;
+text-decoration:none;
+}
+
+.request-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,0.2);
+color:white;
+}
+
+/* EMPTY */
+.empty-row{
+    text-align:center;
+    padding:50px;
+    color:#94a3b8;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+</style>
+
+<div class="full-page">
+
+<!-- HEADER -->
+<div class="page-toolbar">
+    <div>
+        <h2 class="page-title">Supervisor Management</h2>
+        <div class="page-subtitle">
+            View and manage supervisors
+        </div>
+    </div>
+</div>
+
+<!-- TABLE -->
+<div class="premium-table">
+
+<div class="table-responsive">
+<table class="table align-middle">
+
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Experience</th>
+<th>Address</th>
+<th>Document</th>
+<th>Status</th>
+<th>Request</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for i in data %}
+<tr>
+
+<td>{{ forloop.counter }}</td>
+<td>{{ i.name }}</td>
+<td>{{ i.email }}</td>
+<td>{{ i.phone }}</td>
+<td>{{ i.experience_years }} yrs</td>
+<td>{{ i.address }}</td>
+
+<td>
+{% if i.document %}
+<img src="{{ i.document.url }}" class="table-avatar">
+{% else %}
+<div class="table-avatar placeholder">
+{{ i.name|first|upper }}
+</div>
+{% endif %}
+</td>
+
+<td>
+{% if i.is_active %}
+<span class="badge-active">Active</span>
+{% else %}
+<span class="badge-inactive">Inactive</span>
+{% endif %}
+</td>
+
+<td>
+<a href="{% url 'send_request' i.id %}" class="btn btn-primary">
+Send Request
+</a>
+</td>
+
+</tr>
+
+{% empty %}
+<tr>
+<td colspan="9" class="empty-row">
+No Supervisors Found
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

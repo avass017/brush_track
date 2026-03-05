@@ -1,0 +1,282 @@
+{% extends "supervisor/super.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="profile-wrapper">
+
+    <!-- ===== PROFILE HEADER WITH BACKGROUND IMAGE ===== -->
+    <div class="profile-hero">
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <div class="profile-left">
+
+                {% if data.document %}
+                    <img src="{{ data.document.url }}" class="profile-avatar">
+                {% else %}
+                    <div class="profile-avatar placeholder">
+                        {{ data.name|first|upper }}
+                    </div>
+                {% endif %}
+
+                <div class="profile-basic">
+                    <h3>{{ data.name }}</h3>
+
+                    <span class="employee-id">
+                        Employee ID: {{ data.id }}
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="profile-actions">
+                <a href=""
+   class="btn btn-edit-profile">
+    <i class="bi bi-pencil-square me-2"></i> Edit Profile
+</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== PROFILE DETAILS CARD ===== -->
+    <div class="profile-card">
+
+        <h5 class="section-title">Personal Information</h5>
+
+        <div class="info-grid">
+
+            <div class="info-item">
+                <label>Email</label>
+                <p>{{ data.email|default:"Not Provided" }}</p>
+            </div>
+
+            <div class="info-item">
+                <label>Phone</label>
+                <p>{{ data.phone|default:"Not Provided" }}</p>
+            </div>
+
+            <div class="info-item">
+                <label>Id_proof</label>
+                <img src="{{ data.id_proof.url }}" class="profile-avatar">
+            </div>
+
+            <div class="info-item">
+                <label>Address</label>
+                <p>{{ data.address|default:"Not Provided" }}</p>
+            </div>
+ <div class="info-item">
+                <label>experience field</label>
+                <p>{{ data.experience_years|default:"Not Provided" }}</p>
+            </div>
+
+             <div class="info-item">
+                <label>Active</label>
+                <p>{{ data.is_active|default:"Not Provided" }}</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+/* ===== WRAPPER ===== */
+.profile-wrapper {
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ===== HERO SECTION ===== */
+.profile-hero {
+    position: relative;
+    height: 260px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 40px;
+
+    /* 🔥 CHANGE THIS IMAGE URL */
+    background: url('https://paintingdrive.com/blog/wp-content/uploads/2024/07/image-46.png') center/cover no-repeat;
+}
+
+/* Dark overlay */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+}
+
+/* Content inside hero */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+/* ===== PROFILE LEFT ===== */
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Avatar */
+.profile-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,0.6);
+}
+
+.profile-avatar.placeholder {
+    background: rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 600;
+}
+
+/* Text */
+.profile-basic h3 {
+    margin: 0;
+    font-weight: 600;
+}
+/* ===== Premium Edit Profile Button ===== */
+.btn-edit-profile {
+    background: linear-gradient(135deg, #111111, #1f1f1f);
+    color: #ffffff;
+    padding: 10px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+/* Shine Effect */
+.btn-edit-profile::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.25),
+        transparent
+    );
+    transition: 0.6s;
+}
+
+.btn-edit-profile:hover::after {
+    left: 120%;
+}
+
+.btn-edit-profile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+    color: #ffffff;
+}
+
+.profile-basic p {
+    margin: 6px 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.employee-id {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* ===== BUTTON ===== */
+.btn-light {
+    background: white;
+    color: #0f172a;
+    border: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-light:hover {
+    transform: translateY(-2px);
+    background: #f1f5f9;
+}
+
+/* ===== PROFILE CARD ===== */
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+/* Section Title */
+.section-title {
+    font-weight: 600;
+    margin-bottom: 25px;
+    border-left: 4px solid #2563eb;
+    padding-left: 12px;
+}
+
+/* ===== INFO GRID ===== */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.info-item {
+    background: #f8fafc;
+    padding: 18px;
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.info-item:hover {
+    background: #f1f5f9;
+    transform: translateY(-3px);
+}
+
+.info-item label {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.info-item p {
+    margin: 6px 0 0;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+    .hero-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
