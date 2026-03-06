@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 
-from brush_track_app.models import Supervisor, Painter
+from brush_track_app.forms import NotificationRegister
+from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work
+
 
 def supervisor_profile(request):
     data = request.user
@@ -16,3 +18,92 @@ def painters_view(request):
 
     return render(request, 'supervisor/painter_list.html', {'data': painters})
 
+def send_notification(request):
+    form = NotificationRegister()
+
+    if request.method == "POST":
+        form = NotificationRegister(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('notification')
+
+    return render(request, 'supervisor/notification_add.html', {'form': form})
+
+from django.shortcuts import render, redirect
+from brush_track_app.models import Notification, Painter
+
+from django.shortcuts import render
+from brush_track_app.models import Notification
+
+def notification(request):
+
+    supervisor = getattr(request.user, 'supervisor', None)
+    if not supervisor:
+        return redirect('home')
+
+    data = Notification.objects.filter(supervisor=supervisor).order_by('-date_time')
+
+    return render(request, 'supervisor/notification_view.html', {'data': data})
+
+def supervisor_requests(request):
+
+    supervisor = Supervisor.objects.get(supervisor_details=request.user)
+
+    data = FollowRequest.objects.filter(supervisor=supervisor)
+
+    return render(request, "supervisor/request_view.html", {"data": data})
+
+def accept_request(request, id):
+
+    req = FollowRequest.objects.get(id=id)
+    req.status = "Accepted"
+    req.save()
+
+    return redirect('supervisor_requests')
+
+def reject_request(request, id):
+
+    req = FollowRequest.objects.get(id=id)
+    req.status = "Rejected"
+    req.save()
+
+    return redirect('supervisor_requests')
+
+
+def supervisor_works(request):
+
+    supervisor = Supervisor.objects.get(supervisor_details=request.user)
+
+    works = Work.objects.filter(supervisor=supervisor)
+
+    return render(request,'supervisor/work_view.html',{'works':works})
+
+def accept_work(request, id):
+
+    work = Work.objects.get(id=id)
+    work.status = "Accepted"
+    work.save()
+
+    Notification.objects.create(
+        client=work.client,
+        supervisor=work.supervisor,
+        message="Your work request has been accepted by supervisor"
+    )
+
+    return redirect('supervisor_works')
+
+
+def reject_work(request, id):
+
+    work = Work.objects.get(id=id)
+
+    work.status = "Rejected"
+    work.save()
+
+    Notification.objects.create(
+        client=work.client,
+        supervisor=work.supervisor,
+        message="Your work request has been rejected by supervisor"
+    )
+
+    return redirect('supervisor_works')

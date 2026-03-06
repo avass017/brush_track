@@ -1,0 +1,90 @@
+{% extends "client/client.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+
+.page-header{
+    margin-bottom:25px;
+}
+
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+/* CARD */
+.form-card{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:16px;
+    box-shadow:0 10px 35px rgba(0,0,0,0.08);
+}
+
+/* FORM INPUT */
+.form-card input,
+.form-card select,
+.form-card textarea{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #e2e8f0;
+    margin-top:6px;
+    margin-bottom:16px;
+    transition:0.2s;
+}
+
+.form-card input:focus,
+.form-card textarea:focus,
+.form-card select:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 2px rgba(37,99,235,0.15);
+}
+
+/* BUTTON */
+.btn-submit{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-weight:600;
+    color:white;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn-submit:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,0.25);
+}
+
+</style>
+
+
+<div class="page-header">
+    <div class="page-title">Add New Work</div>
+</div>
+
+<div class="form-card">
+
+<form method="post">
+
+{% csrf_token %}
+
+{{ form|crispy }}
+
+<button type="submit" class="btn-submit">
+Add Work
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

@@ -49,3 +49,67 @@ class Painter(models.Model):
             return self.name
 
 
+class Notification(models.Model):
+    client = models.ForeignKey("Client", on_delete=models.CASCADE)
+
+    supervisor = models.ForeignKey("Supervisor", on_delete=models.CASCADE)
+    message= models.TextField()
+    date_time = models.DateTimeField(auto_now_add=True)
+
+class FollowRequest(models.Model):
+
+    STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("Accepted", "Accepted"),
+        ("Rejected", "Rejected"),
+    ]
+
+    client = models.ForeignKey("Client", on_delete=models.CASCADE)
+    supervisor = models.ForeignKey("Supervisor", on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Work(models.Model):
+
+    client = models.ForeignKey("Client", on_delete=models.CASCADE)
+    supervisor = models.ForeignKey("Supervisor", on_delete=models.CASCADE)
+
+
+
+    location = models.CharField(max_length=250)
+    WORK_TYPE_CHOICES = [
+        ("Home", "Home"),
+        ("Office", "Office"),
+        ("Building", "Building"),
+        ("Shop", "Shop"),
+        ("Apartment", "Apartment"),
+    ]
+    work_type = models.CharField(
+        max_length=50,
+        choices=WORK_TYPE_CHOICES
+    )
+
+    square_feet = models.IntegerField(null=True, blank=True)
+
+    paint_type = models.CharField(max_length=100, null=True, blank=True)  # Interior / Exterior
+
+    start_date = models.DateField(null=True, blank=True)
+
+    expected_finish_date = models.DateField(null=True, blank=True)
+
+    budget = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ("Pending", "Pending"),
+            ("Started", "Started"),
+            ("Completed", "Completed"),
+        ],
+        default="Pending"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.work_type

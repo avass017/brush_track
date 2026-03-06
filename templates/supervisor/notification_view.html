@@ -1,0 +1,177 @@
+{% extends "supervisor/super.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+/* ===== PAGE BACKGROUND ===== */
+body,
+.content-wrapper,
+.main-panel {
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    font-family: 'Inter', sans-serif;
+    padding: 25px 15px;
+    margin: 0;
+}
+
+/* ===== WRAPPER ===== */
+.notification-wrapper {
+    animation: fadeSlide 0.6s ease-in-out;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* ===== ADD BUTTON ===== */
+.add-btn {
+    border-radius: 30px;
+    padding: 10px 22px;
+    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    border: none;
+    color: white;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: 0.3s ease;
+    box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+}
+
+.add-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(99,102,241,0.4);
+}
+
+/* ===== NOTIFICATION CARD ===== */
+.notification-card {
+    border-radius: 20px;
+    padding: 25px 30px;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.notification-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, #6366f1, #3b82f6);
+}
+
+.notification-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 38px rgba(0,0,0,0.08);
+}
+
+/* ===== MESSAGE TEXT ===== */
+.notification-message {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+/* ===== DATE STYLE ===== */
+.notification-date {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 10px;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-box {
+    padding: 60px 20px;
+    text-align: center;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+    color: #64748b;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .add-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .notification-card {
+        padding: 20px;
+    }
+
+    .empty-box {
+        padding: 50px 15px;
+    }
+}
+</style>
+
+<div class="notification-wrapper">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div>
+            <div class="page-title">🔔 Notifications</div>
+            <div class="page-subtitle">
+                Manage and monitor system-wide announcements.
+            </div>
+        </div>
+
+        <a href="{% url 'send_notification' %}" class="add-btn">
+            <i class="mdi mdi-plus"></i> New Notification
+        </a>
+    </div>
+
+    <!-- NOTIFICATIONS LIST -->
+    {% for i in data %}
+        <div class="notification-card">
+            <div class="notification-message">{{ i.message }}</div>
+            <div class="notification-date">📅 {{ i.date_time|date:"d M Y • h:i A" }}</div>
+        </div>
+    {% empty %}
+        <div class="empty-box">
+            <i class="mdi mdi-bell-off-outline mdi-36px d-block mb-3"></i>
+            No Notifications Available
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

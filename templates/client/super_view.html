@@ -5,235 +5,206 @@
 
 <style>
 
-/* ================= PAGE WRAPPER ================= */
-.full-page{
-    width:100%;
-    animation:fadeIn .6s ease-in-out;
-}
-
-/* HEADER */
-.page-toolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:35px;
-}
-
+/* PAGE TITLE */
 .page-title{
-    font-size:24px;
-    font-weight:600;
-    color:#0f172a;
+font-size:26px;
+font-weight:700;
+margin-bottom:25px;
+color:#0f172a;
 }
 
-.page-subtitle{
-    font-size:14px;
-    color:#64748b;
+/* LIST */
+.supervisor-list{
+max-width:700px;
+background:white;
+border-radius:12px;
+padding:10px;
+box-shadow:0 4px 15px rgba(0,0,0,0.05);
 }
 
-/* CARD */
-.premium-table{
-    background:#fff;
-    border-radius:20px;
-    padding:30px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.06);
-    overflow:hidden;
-    position:relative;
+/* ROW */
+.supervisor-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:16px 10px;
+border-bottom:1px solid #f1f5f9;
 }
 
-.premium-table::before{
-    content:"";
-    position:absolute;
-    height:5px;
-    width:100%;
-    left:0;
-    top:0;
-    background:linear-gradient(90deg,#3b82f6,#6366f1,#8b5cf6);
+/* LEFT SECTION */
+.supervisor-info{
+display:flex;
+align-items:center;
+gap:14px;
 }
 
-/* TABLE */
-.table thead th{
-    font-size:12px;
-    font-weight:600;
-    text-transform:uppercase;
-    letter-spacing:.5px;
-    background:#f8fafc;
-    color:#475569;
-    padding:15px;
-}
-
-/* PROFILE IMAGE */
-.table-avatar{
-width:40px;
-height:40px;
+/* AVATAR */
+.avatar{
+width:48px;
+height:48px;
 border-radius:50%;
 object-fit:cover;
-border:2px solid #e2e8f0;
 }
 
-/* Placeholder */
-.table-avatar.placeholder{
+.avatar-placeholder{
+width:48px;
+height:48px;
+border-radius:50%;
+background:#2563eb;
+color:white;
 display:flex;
 align-items:center;
 justify-content:center;
-background:#6366f1;
-color:#fff;
+font-weight:700;
+}
+
+/* NAME */
+.name{
 font-weight:600;
-font-size:14px;
+font-size:15px;
+color:#111827;
 }
 
-/* TABLE BODY */
-.table td{
-    font-size:14px;
-    color:#334155;
-    padding:15px;
-}
-
-/* HOVER */
-.table tbody tr{
-    transition:.3s;
-}
-
-.table tbody tr:hover{
-    background:#f8fafc;
-}
-
-/* STATUS BADGE */
-.badge-active{
-    background:#dcfce7;
-    color:#16a34a;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
-}
-
-.badge-inactive{
-    background:#fee2e2;
-    color:#dc2626;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
+/* DETAILS */
+.meta{
+font-size:13px;
+color:#64748b;
 }
 
 /* BUTTON */
-.request-btn{
-background:linear-gradient(135deg,#2563eb,#4f46e5);
-border:none;
-padding:6px 16px;
-border-radius:25px;
-color:white;
-font-size:12px;
+.btn{
+padding:7px 14px;
+border-radius:8px;
+font-size:13px;
 font-weight:600;
-transition:.3s;
+border:none;
 text-decoration:none;
+cursor:pointer;
 }
 
-.request-btn:hover{
-transform:translateY(-2px);
-box-shadow:0 6px 15px rgba(0,0,0,0.2);
+/* SEND REQUEST */
+.btn-request{
+background:#2563eb;
 color:white;
 }
 
-/* EMPTY */
-.empty-row{
-    text-align:center;
-    padding:50px;
-    color:#94a3b8;
+.btn-request:hover{
+background:#1d4ed8;
 }
 
-/* ANIMATION */
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1;transform:translateY(0)}
+/* REQUESTED */
+.btn-requested{
+background:#e2e8f0;
+color:#334155;
+}
+
+/* FOLLOW */
+.btn-follow{
+background:#e2e8f0;
+color:#111;
+}
+
+/* ADD WORK */
+.btn-work{
+background:#22c55e;
+color:white;
+margin-left:6px;
+}
+
+.btn-work:hover{
+background:#16a34a;
 }
 
 </style>
 
-<div class="full-page">
 
-<!-- HEADER -->
-<div class="page-toolbar">
-    <div>
-        <h2 class="page-title">Supervisor Management</h2>
-        <div class="page-subtitle">
-            View and manage supervisors
-        </div>
-    </div>
-</div>
+<h2 class="page-title">Supervisors</h2>
 
-<!-- TABLE -->
-<div class="premium-table">
+<div class="supervisor-list">
 
-<div class="table-responsive">
-<table class="table align-middle">
+{% for sup in data %}
 
-<thead>
-<tr>
-<th>#</th>
-<th>Name</th>
-<th>Email</th>
-<th>Phone</th>
-<th>Experience</th>
-<th>Address</th>
-<th>Document</th>
-<th>Status</th>
-<th>Request</th>
-</tr>
-</thead>
+<div class="supervisor-row">
 
-<tbody>
+<!-- LEFT SIDE -->
+<div class="supervisor-info">
 
-{% for i in data %}
-<tr>
-
-<td>{{ forloop.counter }}</td>
-<td>{{ i.name }}</td>
-<td>{{ i.email }}</td>
-<td>{{ i.phone }}</td>
-<td>{{ i.experience_years }} yrs</td>
-<td>{{ i.address }}</td>
-
-<td>
-{% if i.document %}
-<img src="{{ i.document.url }}" class="table-avatar">
+{% if sup.document %}
+<img src="{{ sup.document.url }}" class="avatar">
 {% else %}
-<div class="table-avatar placeholder">
-{{ i.name|first|upper }}
+<div class="avatar-placeholder">
+{{ sup.name|slice:":1"|upper }}
 </div>
 {% endif %}
-</td>
 
-<td>
-{% if i.is_active %}
-<span class="badge-active">Active</span>
-{% else %}
-<span class="badge-inactive">Inactive</span>
-{% endif %}
-</td>
+<div>
+<div class="name">{{ sup.name }}</div>
+<div class="meta">{{ sup.experience_years }} Years Experience</div>
+</div>
 
-<td>
-<a href="{% url 'send_request' i.id %}" class="btn btn-primary">
+</div>
+
+
+<!-- RIGHT BUTTON -->
+<div>
+
+{% with request_found=False %}
+
+{% for req in requests %}
+
+{% if req.supervisor.id == sup.id %}
+
+{% with request_found=True %}
+
+{% if req.status == "Pending" %}
+
+<button class="btn btn-requested" disabled>
+Requested
+</button>
+
+{% elif req.status == "Accepted" %}
+
+<button class="btn btn-follow" disabled>
+Following
+</button>
+
+<a href="{% url 'add_work' sup.id %}" class="btn btn-work">
+Add Work
+</a>
+
+{% elif req.status == "Rejected" %}
+
+<a href="{% url 'send_request' sup.id %}" class="btn btn-request">
 Send Request
 </a>
-</td>
 
-</tr>
+{% endif %}
 
-{% empty %}
-<tr>
-<td colspan="9" class="empty-row">
-No Supervisors Found
-</td>
-</tr>
+{% endwith %}
+
+{% endif %}
+
 {% endfor %}
 
-</tbody>
+{% if not request_found %}
 
-</table>
+<a href="{% url 'send_request' sup.id %}" class="btn btn-request">
+Send Request
+</a>
+
+{% endif %}
+
+{% endwith %}
+git
 </div>
 
 </div>
+
+{% empty %}
+
+<p>No Supervisors Available</p>
+
+{% endfor %}
 
 </div>
 

@@ -1,0 +1,198 @@
+{% extends "supervisor/super.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h2 class="page-title">Client Requests</h2>
+
+<style>
+
+.page-title{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:25px;
+}
+
+/* Request container */
+.request-container{
+    max-width:650px;
+}
+
+/* Request card */
+.request-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 18px;
+    background:#fff;
+    border-radius:12px;
+    margin-bottom:14px;
+    box-shadow:0 4px 18px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.request-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 22px rgba(0,0,0,0.12);
+}
+
+/* Client info */
+.client-info{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+/* Avatar */
+.profile-avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #e5e7eb;
+}
+
+/* Placeholder avatar */
+.avatar-placeholder{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+}
+
+/* Client name */
+.client-name{
+    font-weight:600;
+    font-size:15px;
+    color:#111827;
+}
+
+/* Status */
+.status{
+    font-size:13px;
+    margin-top:3px;
+    font-weight:500;
+}
+
+.accepted{
+    color:#16a34a;
+}
+
+.rejected{
+    color:#dc2626;
+}
+
+/* Buttons */
+.action-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    padding:7px 16px;
+    border:none;
+    border-radius:7px;
+    font-size:13px;
+    cursor:pointer;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* Accept */
+.btn-accept{
+    background:#0095f6;
+    color:white;
+}
+
+.btn-accept:hover{
+    background:#0077cc;
+}
+
+/* Reject */
+.btn-reject{
+    background:#efefef;
+    color:#333;
+}
+
+.btn-reject:hover{
+    background:#ddd;
+}
+
+</style>
+
+
+<div class="request-container">
+
+{% for i in data %}
+
+<div class="request-card">
+
+<div class="client-info">
+
+{% if i.client.document %}
+<img src="{{ i.client.document.url }}" class="profile-avatar">
+{% else %}
+<div class="avatar-placeholder">
+{{ i.client|first|upper }}
+</div>
+{% endif %}
+
+<div>
+<div class="client-name">{{ i.client }}</div>
+
+{% if i.status == "Accepted" %}
+<div class="status accepted">Request Accepted</div>
+
+{% elif i.status == "Rejected" %}
+<div class="status rejected">Request Rejected</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+
+
+<div class="action-buttons">
+
+{% if i.status == "Pending" %}
+
+<a href="{% url 'accept_request' i.id %}" class="btn btn-accept">
+Accept
+</a>
+
+<a href="{% url 'reject_request' i.id %}" class="btn btn-reject">
+Reject
+</a>
+
+{% elif i.status == "Accepted" %}
+
+<a href="" class="btn btn-accept">
+View Work
+</a>
+
+{% else %}
+
+<span class="status rejected">Rejected</span>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p>No Client Requests</p>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
