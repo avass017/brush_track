@@ -1,7 +1,8 @@
+from django.db.models import Avg
 from django.shortcuts import render, redirect
 
 from brush_track_app.forms import NotificationRegister
-from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work
+from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating
 
 
 def supervisor_profile(request):
@@ -51,8 +52,19 @@ def supervisor_requests(request):
 
     data = FollowRequest.objects.filter(supervisor=supervisor)
 
-    return render(request, "supervisor/request_view.html", {"data": data})
+    reviews = Rating.objects.filter(supervisor=supervisor)
 
+    avg_rating = Rating.objects.filter(
+        supervisor=supervisor
+    ).aggregate(Avg("rating"))["rating__avg"]
+
+    context = {
+        "data": data,
+        "reviews": reviews,
+        "avg_rating": avg_rating
+    }
+
+    return render(request, "supervisor/request_view.html", context)
 def accept_request(request, id):
 
     req = FollowRequest.objects.get(id=id)

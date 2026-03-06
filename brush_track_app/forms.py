@@ -2,7 +2,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from brush_track_app.models import Login, Client, Supervisor, Painter, Notification, FollowRequest, Work
+from brush_track_app.models import Login, Client, Supervisor, Painter, Notification, FollowRequest, Work, Rating
 
 
 class LoginRegister(UserCreationForm):
@@ -94,4 +94,20 @@ class WorkRegister(forms.ModelForm):
                 "class": "form-control",
                 "placeholder": "Enter Budget"
             }),
+        }
+
+class RatingRegister(forms.ModelForm):
+
+    class Meta:
+        model = Rating
+        fields = ["rating", "review"]
+
+        widgets = {
+            "rating": forms.Select(choices=[
+                (1,"⭐ 1"),
+                (2,"⭐⭐ 2"),
+                (3,"⭐⭐⭐ 3"),
+                (4,"⭐⭐⭐⭐ 4"),
+                (5,"⭐⭐⭐⭐⭐ 5")
+            ])
         }

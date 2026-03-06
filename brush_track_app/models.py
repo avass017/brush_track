@@ -113,3 +113,16 @@ class Work(models.Model):
 
     def __str__(self):
         return self.work_type
+
+class Rating(models.Model):
+
+    client = models.ForeignKey("Client", on_delete=models.CASCADE)
+    supervisor = models.ForeignKey("Supervisor", on_delete=models.CASCADE)
+
+    rating = models.IntegerField()
+    review = models.TextField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.client} rated {self.supervisor} - {self.rating}"

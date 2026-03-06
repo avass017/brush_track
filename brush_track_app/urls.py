@@ -34,5 +34,9 @@ path("add_work/<int:id>/", clientview.add_work, name="add_work"),
 path('accept_work/<int:id>/', superview.accept_work, name="accept_work"),
 path('reject_work/<int:id>/', superview.reject_work, name="reject_work"),
 path('client_notifications/',clientview.client_notifications,name="client_notifications"),
+path("add_rating/<int:id>/",clientview.add_rating,name="add_rating"),
+
+
+
 ]
 
