@@ -2,7 +2,7 @@ from django.db.models import Avg
 from django.shortcuts import render, redirect
 
 from brush_track_app.forms import NotificationRegister
-from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating
+from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating, Complaint
 
 
 def supervisor_profile(request):
@@ -30,11 +30,8 @@ def send_notification(request):
 
     return render(request, 'supervisor/notification_add.html', {'form': form})
 
-from django.shortcuts import render, redirect
-from brush_track_app.models import Notification, Painter
 
-from django.shortcuts import render
-from brush_track_app.models import Notification
+
 
 def notification(request):
 
@@ -119,3 +116,8 @@ def reject_work(request, id):
     )
 
     return redirect('supervisor_works')
+
+def client_complaint(request):
+    supervisor = request.user.supervisor
+    data = Complaint.objects.filter(supervisor=supervisor)
+    return render(request, 'supervisor/complaint.html', {'data': data})

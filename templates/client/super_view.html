@@ -125,6 +125,17 @@ margin-left:6px;
 background:#d97706;
 }
 
+.btn-complaint{
+background:#ef4444;
+color:white;
+margin-left:6px;
+}
+
+.btn-complaint:hover{
+background:#dc2626;
+}
+
+
 </style>
 
 
@@ -153,6 +164,9 @@ background:#d97706;
 
 <br>
 ⭐ {{ sup.avg_rating|default:"0" }} / 5
+<a href="{% url 'add_rating' sup.id %}" class="btn btn-rate">
+Review
+</a>
 
 </div>
 
@@ -182,8 +196,10 @@ Following
 Add Work
 </a>
 
-<a href="{% url 'add_rating' sup.id %}" class="btn btn-rate">
-Rate
+
+
+<a href="{% url 'complaint_view'  %}" class="btn btn-complaint">
+Complaint
 </a>
 
 {% elif req.status == "Rejected" %}

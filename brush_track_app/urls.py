@@ -35,8 +35,9 @@ path('accept_work/<int:id>/', superview.accept_work, name="accept_work"),
 path('reject_work/<int:id>/', superview.reject_work, name="reject_work"),
 path('client_notifications/',clientview.client_notifications,name="client_notifications"),
 path("add_rating/<int:id>/",clientview.add_rating,name="add_rating"),
-
-
+path('complaint_add',clientview.complaint_add,name="complaint_add"),
+path('complaint_view',clientview.complaint_view,name="complaint_view"),
+path('client_complaint',superview.client_complaint,name="client_complaint"),
 
 ]
 

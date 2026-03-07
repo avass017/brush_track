@@ -2,7 +2,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from brush_track_app.models import Login, Client, Supervisor, Painter, Notification, FollowRequest, Work, Rating
+from brush_track_app.models import Login, Client, Supervisor, Painter, Notification, FollowRequest, Work, Rating, \
+    Complaint
 
 
 class LoginRegister(UserCreationForm):
@@ -110,4 +111,12 @@ class RatingRegister(forms.ModelForm):
                 (4,"⭐⭐⭐⭐ 4"),
                 (5,"⭐⭐⭐⭐⭐ 5")
             ])
+        }
+class ComplaintRegister(forms.ModelForm):
+    class Meta:
+        model = Complaint
+        fields = ['subject']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+
         }

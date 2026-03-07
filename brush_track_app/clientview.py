@@ -1,7 +1,9 @@
+from django.db.models import Avg
 from django.shortcuts import render, redirect
+from django.utils import timezone
 
-from brush_track_app.forms import WorkRegister, RatingRegister
-from brush_track_app.models import Client, Supervisor, FollowRequest, Notification
+from brush_track_app.forms import WorkRegister, RatingRegister, ComplaintRegister
+from brush_track_app.models import Client, Supervisor, FollowRequest, Notification, Work, Rating, Complaint
 
 
 def client_profile(request):
@@ -9,8 +11,7 @@ def client_profile(request):
     client_prof = Client.objects.get(client_details=data.id)
     return render(request,"client/profile_c.html",{'data':client_prof})
 
-from django.db.models import Avg
-from .models import Supervisor, Client, FollowRequest, Rating
+
 
 def supervisor_view(request):
 
@@ -106,3 +107,22 @@ def add_rating(request, id):
     return render(request,"client/add_rating.html",{
         "form":form
     })
+
+def complaint_add(request):
+    if request.method == "POST":
+        form = ComplaintRegister(request.POST)
+        if form.is_valid():
+            complaint = form.save(commit=False)
+            complaint.complaint_details = request.user.client  # assign employee
+            complaint.date = timezone.localdate()  # assign today's date
+            complaint.save()
+            return redirect('complaint_view')
+    else:
+        form = ComplaintRegister()
+
+    return render(request, 'client/complaint.html', {'form': form})
+
+def complaint_view(request):
+    client = request.user.client
+    data = Complaint.objects.filter(complaint_details=client)
+    return render(request, 'client/complaint_view.html', {'data': data})

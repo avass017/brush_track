@@ -2,13 +2,18 @@
 
 {% block content %}
 
-<h3>Your Notifications</h3>
+<h3>Your Notifications & Complaints</h3>
 
 {% for n in notifications %}
 
-<div style="background:#ffffff;padding:15px;margin-bottom:10px;border-radius:10px;border-left:5px solid #0d6efd">
+<div style="background:#ffffff;padding:15px;margin-bottom:10px;border-radius:10px;border-left:5px solid {% if n.is_complaint %}#ef4444{% else %}#0d6efd{% endif %}">
 
-<b>{{ n.message }}</b>
+<b>{% if n.is_complaint %}Complaint:{% else %}Notification:{% endif %} {{ n.message }}</b>
+
+{% if n.reply %}
+<br><br>
+<span style="color:#166534;font-weight:600;">Supervisor Reply: {{ n.reply }}</span>
+{% endif %}
 
 <br>
 

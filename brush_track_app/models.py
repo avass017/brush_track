@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
+
 
 # Create your models here.
 class Login(AbstractUser):
@@ -126,3 +128,10 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"{self.client} rated {self.supervisor} - {self.rating}"
+
+class Complaint(models.Model):
+    complaint_details = models.ForeignKey("Client", on_delete=models.CASCADE)
+    supervisor = models.ForeignKey("Supervisor", on_delete=models.CASCADE)
+    subject = models.CharField(max_length=200)
+    date = models.DateField(default=timezone.now)
+
