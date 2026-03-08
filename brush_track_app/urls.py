@@ -26,8 +26,8 @@ path('my_works',clientview.my_works,name='my_works'),
 path('supervisor_requests/', superview.supervisor_requests, name='supervisor_requests'),
 
 path('accept_request/<int:id>/', superview.accept_request, name='accept_request'),
-
-path('reject_request/<int:id>/', superview.reject_request, name='reject_request'),
+path('painter-assigned-works/', painterview.painter_assigned_works, name='painter_assigned_works') ,
+    path('reject_request/<int:id>/', superview.reject_request, name='reject_request'),
 path('client_requests',clientview.client_requests,name='client_requests'),
 path("add_work/<int:id>/", clientview.add_work, name="add_work"),
 path('accept_work/<int:id>/', superview.accept_work, name="accept_work"),
@@ -35,6 +35,16 @@ path('reject_work/<int:id>/', superview.reject_work, name="reject_work"),
 path('client_notifications/',clientview.client_notifications,name="client_notifications"),
 path("add_rating/<int:id>/",clientview.add_rating,name="add_rating"),
 path('supervisor_works/', superview.supervisor_works, name='supervisor_works'),
+path('add_work_status_update/<int:id>/', superview.add_work_status_update, name='add_work_status_update'),
+path('assign-work/<int:id>/', superview.assign_painter, name='assign_work'),
+path('assigned-works/', superview.supervisor_assigned_works, name='assigned_works'),
+path('work-status/<int:id>/', clientview.work_status, name='work_status'),
+path('Log_out_client',clientview.Log_out_client,name='Log_out_client'),
+    path('client_dashboard',clientview.client_dashboard,name='client_dashboard'),
+
+
+
+
 
 
 

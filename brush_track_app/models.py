@@ -133,14 +133,56 @@ class Rating(models.Model):
 
 
 
+
+
 class WorkStatusUpdate(models.Model):
-
-    work = models.ForeignKey("Work", on_delete=models.CASCADE)
-
+    work = models.ForeignKey("Work", on_delete=models.CASCADE, related_name="status_updates")
     status = models.CharField(max_length=100)
-
     progress_percentage = models.IntegerField()
-
     message = models.TextField(blank=True)
-
     updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.work} - {self.status} ({self.progress_percentage}%)"
+
+class WorkAssign(models.Model):
+
+    AREA_CHOICES = [
+        ('hall', 'Hall'),
+        ('bedroom', 'Bedroom'),
+        ('kitchen', 'Kitchen'),
+        ('bathroom', 'Bathroom'),
+        ('exterior', 'Exterior'),
+    ]
+
+    WORK_TYPE_CHOICES = [
+        ('painting', 'Painting'),
+        ('washing', 'Washing'),
+        ('cleaning', 'Cleaning'),
+    ]
+
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+    ]
+
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE)
+    painter = models.ForeignKey(Painter, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
+
+    work_type = models.CharField(max_length=20, choices=WORK_TYPE_CHOICES)
+
+    area = models.CharField(max_length=50, choices=AREA_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+
+    assigned_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.work} - {self.painter} - {self.work_type}"
+
+class Assignment(models.Model):
+    painter = models.ForeignKey(Painter, on_delete=models.CASCADE)
+
+    work = models.ForeignKey(Work, on_delete=models.CASCADE)

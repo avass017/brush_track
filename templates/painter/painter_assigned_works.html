@@ -1,0 +1,154 @@
+{% extends "painter/painter.html" %}
+
+{% block title %}Work Assignments{% endblock %}
+
+{% block content %}
+
+<style>
+
+.page-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.page-title{
+font-size:24px;
+font-weight:700;
+color:#0f172a;
+}
+
+/* TABLE CARD */
+
+.table-card{
+background:#fff;
+border-radius:12px;
+box-shadow:0 8px 30px rgba(0,0,0,0.08);
+overflow:hidden;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:12px 15px;
+font-size:14px;
+text-align:center;
+border-bottom:1px solid #e5e7eb;
+}
+
+th{
+background:#f8fafc;
+font-weight:600;
+color:#334155;
+}
+
+tr:hover{
+background:#f9fafb;
+}
+
+/* STATUS BADGE */
+
+.status{
+padding:4px 10px;
+border-radius:12px;
+font-size:12px;
+font-weight:600;
+}
+
+.pending{
+background:#fef3c7;
+color:#b45309;
+}
+
+.in_progress{
+background:#dbeafe;
+color:#1d4ed8;
+}
+
+.completed{
+background:#dcfce7;
+color:#15803d;
+}
+
+.empty{
+text-align:center;
+padding:20px;
+color:#64748b;
+}
+
+</style>
+
+
+<div class="page-header">
+
+<div class="page-title">
+Work Assignments
+</div>
+
+</div>
+
+
+<div class="table-card">
+
+<table>
+
+<thead>
+<tr>
+<th>Client</th>
+<th>Work</th>
+<th>Painter</th>
+<th>Supervisor</th>
+<th>Work Type</th>
+<th>Area</th>
+
+<th>Assigned Date</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for assign in assignments %}
+
+<tr>
+
+<td>{{ assign.client }}</td>
+
+<td>{{ assign.work }}</td>
+
+<td>{{ assign.painter }}</td>
+
+<td>{{ assign.supervisor }}</td>
+
+<td>{{ assign.get_work_type_display }}</td>
+
+<td>{{ assign.get_area_display }}</td>
+
+
+
+<td>{{ assign.assigned_date }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="8" class="empty">
+No assignments found
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

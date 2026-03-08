@@ -1,15 +1,131 @@
-{% for a in assignments %}
+{% extends "painter/painter.html" %}
+
+{% block content %}
+
+<style>
+
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:20px;
+    color:#0f172a;
+}
+
+/* CARD */
+
+.table-card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+
+.work-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.work-table th{
+    background:#2563eb;
+    color:white;
+    padding:12px;
+    text-align:left;
+}
+
+.work-table td{
+    padding:12px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+/* STATUS */
+
+.status{
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.started{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.completed{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:20px;
+    color:#64748b;
+}
+
+</style>
+
+<div class="page-title">
+Available Painting Works
+</div>
+
+<div class="table-card">
+
+<table class="work-table">
 
 <tr>
-<td>{{a.work.work_type}}</td>
-<td>{{a.work.location}}</td>
-<td>{{a.work.status}}</td>
+<th>Work Type</th>
+<th>Location</th>
+<th>Status</th>
+</tr>
+
+{% for i in works %}
+
+<tr>
+
+<td>
+{{ i.work_type }}
+</td>
+
+<td>
+{{ i.location }}
+</td>
+
+<td>
+
+{% if i.status == "Pending" %} <span class="status pending">Pending</span>
+
+{% elif i.status == "Started" %} <span class="status started">Started</span>
+
+{% elif i.status == "Completed" %} <span class="status completed">Completed</span>
+
+{% else %} <span class="status">{{ i.status }}</span>
+{% endif %}
+
+</td>
+
 </tr>
 
 {% empty %}
 
 <tr>
-<td colspan="3">No work assigned</td>
+<td colspan="3" class="empty">
+No work available
+</td>
 </tr>
 
 {% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

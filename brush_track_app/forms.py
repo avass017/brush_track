@@ -2,7 +2,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from brush_track_app.models import Login, Client, Supervisor, Painter, Notification, FollowRequest, Work, Rating
+from brush_track_app.models import Login, Client, Supervisor, Painter, Notification, FollowRequest, Work, Rating, \
+    WorkStatusUpdate, WorkAssign
 
 
 class LoginRegister(UserCreationForm):
@@ -113,3 +114,40 @@ class RatingRegister(forms.ModelForm):
         }
 
 
+class WorkStatusUpdateRegister(forms.ModelForm):
+    class Meta:
+        model = WorkStatusUpdate
+        fields = ["status", "progress_percentage", "message"]
+        widgets = {
+            "status": forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "e.g. Started / Primer completed"
+            }),
+            "progress_percentage": forms.NumberInput(attrs={
+                "class": "form-control",
+                "min": 0,
+                "max": 100
+            }),
+            "message": forms.Textarea(attrs={
+                "class": "form-control",
+                "rows": 4,
+                "placeholder": "Optional work update message"
+            }),
+        }
+
+class WorkAssignForm(forms.ModelForm):
+    class Meta:
+        model = WorkAssign
+        fields = [
+            'painter',
+            'work_type',
+            'area',
+            'status'
+        ]
+
+        widgets = {
+            'painter': forms.Select(attrs={'class': 'form-control'}),
+            'work_type': forms.Select(attrs={'class': 'form-control'}),
+            'area': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+        }

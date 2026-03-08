@@ -61,8 +61,6 @@
     font-weight:600;
 }
 
-/* STATUS COLORS */
-
 .pending{
     background:#fef3c7;
     color:#b45309;
@@ -83,25 +81,21 @@
     color:#b91c1c;
 }
 
-/* BUTTONS */
+/* BUTTON */
 
-.action-btn{
+.view-btn{
+    background:#2563eb;
     padding:7px 14px;
     border-radius:6px;
     font-size:13px;
     text-decoration:none;
     color:white;
     display:inline-block;
-    margin-top:10px;
+    margin-top:12px;
 }
 
-.accept-btn{
-    background:#16a34a;
-}
-
-.reject-btn{
-    background:#dc2626;
-    margin-left:6px;
+.view-btn:hover{
+    background:#1d4ed8;
 }
 
 </style>
@@ -141,29 +135,27 @@ My Works
 </div>
 
 
-<!-- STATUS & ACTIONS -->
+<!-- STATUS -->
 
 {% if work.status == "Pending" %}
-
 <div class="status pending">Pending Approval</div>
 
-<br>
-
-
-
 {% elif work.status == "Accepted" %}
-
 <div class="status accepted">Accepted</div>
 
 {% elif work.status == "Rejected" %}
-
 <div class="status rejected">Rejected</div>
 
 {% elif work.status == "Completed" %}
-
 <div class="status completed">Completed</div>
-
 {% endif %}
+
+
+<!-- VIEW STATUS BUTTON -->
+
+<a href="{% url 'work_status' work.id %}" class="view-btn">
+View Status
+</a>
 
 </div>
 

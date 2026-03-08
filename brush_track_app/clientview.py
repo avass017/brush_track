@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.db.models import Avg
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -125,3 +126,62 @@ def my_works(request):
     works = Work.objects.filter(client=client)
 
     return render(request,'client/add_work_view.html',{'works':works})
+
+def work_status(request, id):
+
+    client = Client.objects.get(client_details=request.user)
+
+    work = Work.objects.get(id=id, client=client)
+
+    updates = WorkStatusUpdate.objects.filter(work=work).order_by('-updated_at')
+
+    return render(request, "client/work_status_view.html", {
+        "work": work,
+        "updates": updates
+    })
+
+
+def Log_out_client(request):
+    logout(request)
+    return redirect('login_view')
+
+
+def client_dashboard(request):
+    client = Client.objects.get(client_details=request.user)
+
+    # Profile
+    client_prof = client
+
+    # Supervisors + avg rating
+    supervisors = Supervisor.objects.all()
+    for sup in supervisors:
+        sup.avg_rating = Rating.objects.filter(supervisor=sup).aggregate(Avg("rating"))["rating__avg"]
+
+    # Follow Requests
+    follow_requests = FollowRequest.objects.filter(client=client)
+
+    # My Works
+    my_works = Work.objects.filter(client=client)
+
+    # Work Status Updates (latest 5)
+    latest_updates = WorkStatusUpdate.objects.filter(work__in=my_works).order_by('-updated_at')[:5]
+
+    # Notifications (latest 5)
+    notifications = Notification.objects.filter(client=client).order_by('-date_time')[:5]
+
+    # Forms
+    work_form = WorkRegister()
+    rating_form = RatingRegister()
+
+    context = {
+        "profile": client_prof,
+        "supervisors": supervisors,
+        "follow_requests": follow_requests,
+        "my_works": my_works,
+        "latest_updates": latest_updates,
+        "notifications": notifications,
+        "work_form": work_form,
+        "rating_form": rating_form,
+    }
+
+    return render(request, "client/client_dashboard.html", context)

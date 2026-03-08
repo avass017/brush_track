@@ -1,0 +1,145 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+
+<style>
+
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:20px;
+    color:#0f172a;
+}
+
+/* WORK INFO */
+
+.work-info{
+    background:white;
+    padding:18px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+
+/* TABLE */
+
+.update-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+.update-table th{
+    background:#2563eb;
+    color:white;
+    padding:12px;
+    text-align:left;
+}
+
+.update-table td{
+    padding:12px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+/* PROGRESS BAR */
+
+.progress-container{
+    background:#e2e8f0;
+    height:8px;
+    border-radius:10px;
+    margin-top:5px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:8px;
+    background:#16a34a;
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:8px 16px;
+    background:#0f172a;
+    color:white;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+.back-btn:hover{
+    background:#1e293b;
+}
+
+.empty-msg{
+    text-align:center;
+    padding:20px;
+    color:#64748b;
+}
+
+</style>
+
+<div class="page-title">
+Work Status Updates
+</div>
+
+<div class="work-info">
+
+<div><b>Work Type :</b> {{ work.work_type }}</div>
+
+<div><b>Location :</b> {{ work.location }}</div>
+
+<div><b>Status :</b> {{ work.status }}</div>
+
+</div>
+
+<table class="update-table">
+
+<tr>
+<th>Progress</th>
+<th>Update Message</th>
+    <th>Now Status</th>
+<th>Date</th>
+</tr>
+
+{% for update in updates %}
+
+<tr>
+
+<td>
+{{ update.progress_percentage }}%
+</td>
+
+<td>
+{{ update.message }}
+</td>
+<td>
+{{ update.status }}
+</td>
+<td>
+{{ update.updated_at|date:"d M Y H:i" }}
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="3" class="empty-msg">
+No Updates Yet
+</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a href="{% url 'my_works' %}" class="back-btn">
+⬅ Back to My Works
+</a>
+
+{% endblock %}

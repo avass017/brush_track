@@ -1,0 +1,160 @@
+{% extends "supervisor/super.html" %}
+
+{% block content %}
+
+<style>
+
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:25px;
+    color:#0f172a;
+}
+
+/* WORK INFO CARD */
+
+.work-info{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    margin-bottom:25px;
+}
+
+.work-info div{
+    margin-bottom:6px;
+}
+
+/* FORM CARD */
+
+.form-card{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    margin-bottom:30px;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select{
+    width:100%;
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #cbd5e1;
+    margin-bottom:14px;
+}
+
+/* BUTTON */
+
+.submit-btn{
+    background:#2563eb;
+    color:white;
+    padding:10px 20px;
+    border:none;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:#1d4ed8;
+}
+
+/* UPDATES LIST */
+
+.update-card{
+    background:white;
+    padding:18px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.06);
+    margin-bottom:15px;
+}
+
+.update-title{
+    font-weight:600;
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+.update-meta{
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:8px;
+}
+
+.progress{
+    font-weight:600;
+    color:#16a34a;
+}
+
+</style>
+
+<div class="page-title">
+Work Status Update
+</div>
+
+<!-- WORK DETAILS -->
+
+<div class="work-info">
+
+<div><b>Work :</b> {{ work.work_type }}</div>
+
+<div><b>Client :</b> {{ work.client }}</div>
+
+<div><b>Location :</b> {{ work.location }}</div>
+
+<div><b>Status :</b> {{ work.status }}</div>
+
+</div>
+
+<!-- ADD UPDATE FORM -->
+
+<div class="form-card">
+
+<form method="POST">
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button type="submit" class="submit-btn">
+Add Update
+</button>
+
+</form>
+
+</div>
+
+<!-- PREVIOUS UPDATES -->
+
+<h3 style="margin-bottom:15px;">Previous Updates</h3>
+
+{% for update in updates %}
+
+<div class="update-card">
+
+<div class="update-title">
+{{ update.title }}
+</div>
+
+<div class="update-meta">
+Updated on {{ update.updated_at }}
+</div>
+
+<div>
+{{ update.description }}
+</div>
+
+<div class="progress">
+Progress : {{ update.progress_percentage }} %
+</div>
+
+</div>
+
+{% empty %}
+
+<p>No updates added yet.</p>
+
+{% endfor %}
+
+{% endblock %}

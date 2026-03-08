@@ -1,0 +1,152 @@
+{% extends "supervisor/super.html" %}
+
+{% block content %}
+
+<style>
+
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:15px;
+    color:#0f172a;
+}
+
+.top-bar{
+    margin-bottom:20px;
+}
+
+/* BUTTON */
+
+.action-btn{
+    padding:8px 16px;
+    border-radius:6px;
+    font-size:14px;
+    text-decoration:none;
+    color:white;
+    display:inline-block;
+}
+
+.assign-btn{
+    background:#2563eb;
+}
+
+.update-btn{
+    background:#16a34a;
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+    background:white;
+    border-collapse:collapse;
+    box-shadow:0 6px 25px rgba(0,0,0,0.08);
+}
+
+th,td{
+    padding:12px;
+    text-align:left;
+    border-bottom:1px solid #e5e7eb;
+}
+
+th{
+    background:#f1f5f9;
+}
+
+/* STATUS */
+
+.status{
+    padding:4px 10px;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.in_progress{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.completed{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+</style>
+
+
+<div class="page-title">
+Assigned Works
+</div>
+
+
+<!-- TOP LEFT BUTTON -->
+
+<div class="top-bar">
+
+{% for i in assigned_works %}
+
+<a href="{% url 'assign_work' i.work.id %}" class="action-btn assign-btn">
+<i class="mdi mdi-cash-multiple"></i> Assign Work
+</a>
+
+{% endfor %}
+
+</div>
+
+
+<table>
+
+<tr>
+    <th>Client</th>
+    <th>Work</th>
+    <th>Painter</th>
+    <th>Work Type</th>
+    <th>Area</th>
+    <th>Status</th>
+    <th>Date</th>
+    <th>Update</th>
+</tr>
+
+{% for work in assigned_works %}
+
+<tr>
+
+<td>{{ work.client }}</td>
+
+<td>{{ work.work }}</td>
+
+<td>{{ work.painter }}</td>
+
+<td>{{ work.work_type }}</td>
+
+<td>{{ work.area }}</td>
+
+<td>
+<span class="status {{ work.status }}">
+{{ work.status }}
+</span>
+</td>
+
+<td>{{ work.assigned_date }}</td>
+
+
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="8">No Assigned Works</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

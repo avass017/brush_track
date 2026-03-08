@@ -1,0 +1,51 @@
+{% extends "supervisor/super.html" %}
+
+{% block content %}
+
+<style>
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:20px;
+    color:#0f172a;
+}
+
+.form-container{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    width:450px;
+    box-shadow:0 6px 25px rgba(0,0,0,0.08);
+}
+
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:8px 16px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+</style>
+
+<div class="page-title">
+Assign Work
+</div>
+
+<div class="form-container">
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Assign Work</button>
+</form>
+
+</div>
+
+{% endblock %}

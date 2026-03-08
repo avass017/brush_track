@@ -1,8 +1,9 @@
 from django.db.models import Avg
 from django.shortcuts import render, redirect
 
-from brush_track_app.forms import NotificationRegister
-from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating,  Client
+from brush_track_app.forms import NotificationRegister, WorkStatusUpdateRegister, WorkAssignForm
+from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating, Client, \
+    WorkStatusUpdate, WorkAssign
 
 
 def supervisor_profile(request):
@@ -104,7 +105,7 @@ def supervisor_works(request):
 
     works = Work.objects.filter(supervisor=supervisor)
 
-    return render(request,'supervisor/work_view.html',{'works':works})
+    return render(request, 'supervisor/work_view.html', {'works': works})
 
 def accept_work(request, id):
 
@@ -137,3 +138,68 @@ def reject_work(request, id):
     return redirect('supervisor_works')
 
 
+
+def add_work_status_update(request, id):
+    supervisor = Supervisor.objects.get(supervisor_details=request.user)
+    work = Work.objects.get(id=id, supervisor=supervisor)
+
+    if request.method == "POST":
+        form = WorkStatusUpdateRegister(request.POST)
+        if form.is_valid():
+            status_update = form.save(commit=False)
+            status_update.work = work
+            status_update.save()
+
+            if status_update.progress_percentage >= 100:
+                work.status = "Completed"
+            elif work.status == "Pending":
+                work.status = "Started"
+            work.save()
+
+            return redirect("supervisor_works")
+    else:
+        form = WorkStatusUpdateRegister()
+
+    updates = WorkStatusUpdate.objects.filter(work=work).order_by('-updated_at')
+
+    return render(request, 'supervisor/work_status_update_add.html', {
+        'form': form,
+        'work': work,
+        'updates': updates,
+    })
+
+
+def assign_painter(request, id):
+
+    work = Work.objects.get(id=id)
+    supervisor = Supervisor.objects.get(supervisor_details=request.user)
+
+    if request.method == "POST":
+        form = WorkAssignForm(request.POST)
+
+        if form.is_valid():
+            assign = form.save(commit=False)
+            assign.work = work
+            assign.client = work.client
+            assign.supervisor = supervisor
+            assign.save()
+
+            return redirect('supervisor_assigned_works')
+
+    else:
+        form = WorkAssignForm()
+
+    return render(request,'supervisor/assign_painter.html',{
+        'form':form,
+        'work':work
+    })
+
+def supervisor_assigned_works(request):
+
+    supervisor = Supervisor.objects.get(supervisor_details=request.user)
+
+    assigned_works = WorkAssign.objects.filter(supervisor=supervisor)
+
+    return render(request,'supervisor/assigned_works.html',{
+        'assigned_works':assigned_works
+    })

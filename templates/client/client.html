@@ -229,7 +229,12 @@ Painting System
 </div>
 
 <ul>
-
+<li>
+<a href="{% url 'client_dashboard'%}">
+<i class="mdi mdi-account"></i>
+All view
+</a>
+</li>
 <li>
 <a href="{% url 'client_profile'%}">
 <i class="mdi mdi-account"></i>
@@ -250,6 +255,8 @@ Supervisors
 My Works
 </a>
 </li>
+
+
 
 </ul>
 
@@ -301,7 +308,7 @@ My Works
 
 <!-- Logout -->
 
-<a href="#">
+<a href="{% url 'Log_out_client' %}">
 <button class="logout-btn">Logout</button>
 </a>
 

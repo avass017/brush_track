@@ -104,6 +104,11 @@
     margin-left:6px;
 }
 
+.update-btn{
+    background:#2563eb;
+    margin-top:10px;
+}
+
 </style>
 
 
@@ -160,6 +165,10 @@ Reject
 {% elif work.status == "Accepted" %}
 
 <div class="status accepted">Accepted</div>
+
+<a href="{% url 'add_work_status_update' work.id %}" class="action-btn update-btn">
+Update Work Status
+</a>
 
 {% elif work.status == "Rejected" %}
 

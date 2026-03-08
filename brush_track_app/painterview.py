@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 
-from brush_track_app.models import Painter, Notification, Work
+from brush_track_app.models import Painter, Notification, Work, Assignment, WorkAssign
 
 
 def painter_profile(request):
@@ -19,3 +19,7 @@ def painter_notifications(request):
 
     return render(request, 'painter/super_notification.html', {'data': notifications})
 
+
+def painter_assigned_works(request):
+    assignments = WorkAssign.objects.all()  # എല്ലാ assignment-കളും fetch ചെയ്യുന്നു
+    return render(request, "painter/painter_assigned_works.html", {"assignments": assignments})
