@@ -2,8 +2,9 @@ from django.db.models import Avg
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
-from brush_track_app.forms import WorkRegister, RatingRegister, ComplaintRegister
-from brush_track_app.models import Client, Supervisor, FollowRequest, Notification, Work, Rating, Complaint
+from brush_track_app.forms import WorkRegister, RatingRegister
+from brush_track_app.models import Client, Supervisor, FollowRequest, Notification, Work, Rating, \
+    WorkStatusUpdate
 
 
 def client_profile(request):
@@ -70,7 +71,7 @@ def add_work(request, id):
             work.supervisor = supervisor
             work.save()
 
-            return redirect("supervisor_view")
+            return redirect("my_works")
 
     else:
         form = WorkRegister()
@@ -108,21 +109,19 @@ def add_rating(request, id):
         "form":form
     })
 
-def complaint_add(request):
-    if request.method == "POST":
-        form = ComplaintRegister(request.POST)
-        if form.is_valid():
-            complaint = form.save(commit=False)
-            complaint.complaint_details = request.user.client  # assign employee
-            complaint.date = timezone.localdate()  # assign today's date
-            complaint.save()
-            return redirect('complaint_view')
-    else:
-        form = ComplaintRegister()
 
-    return render(request, 'client/complaint.html', {'form': form})
+def client_work_status(request,id):
 
-def complaint_view(request):
-    client = request.user.client
-    data = Complaint.objects.filter(complaint_details=client)
-    return render(request, 'client/complaint_view.html', {'data': data})
+    updates = WorkStatusUpdate.objects.filter(work=id).order_by('-updated_at')
+
+    return render(request,'client/work_status.html',{
+        'updates':updates
+    })
+
+def my_works(request):
+
+    client = Client.objects.get(client_details=request.user)
+
+    works = Work.objects.filter(client=client)
+
+    return render(request,'client/add_work_view.html',{'works':works})

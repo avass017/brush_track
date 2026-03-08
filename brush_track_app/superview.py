@@ -2,7 +2,7 @@ from django.db.models import Avg
 from django.shortcuts import render, redirect
 
 from brush_track_app.forms import NotificationRegister
-from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating, Complaint
+from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating,  Client
 
 
 def supervisor_profile(request):
@@ -20,28 +20,47 @@ def painters_view(request):
     return render(request, 'supervisor/painter_list.html', {'data': painters})
 
 def send_notification(request):
+
     form = NotificationRegister()
 
     if request.method == "POST":
         form = NotificationRegister(request.POST)
+
         if form.is_valid():
-            form.save()
+
+            notification = form.save(commit=False)
+
+            supervisor = Supervisor.objects.get(supervisor_details=request.user)
+
+            notification.supervisor = supervisor
+
+            # assign client
+            client_id = request.POST.get('client')
+            notification.client = Client.objects.get(id=client_id)
+
+            notification.save()
+
             return redirect('notification')
 
-    return render(request, 'supervisor/notification_add.html', {'form': form})
+    return render(request,'supervisor/notification_add.html',{'form':form})
 
 
 
 
 def notification(request):
 
-    supervisor = getattr(request.user, 'supervisor', None)
-    if not supervisor:
+    try:
+        supervisor = Supervisor.objects.get(supervisor_details=request.user)
+    except Supervisor.DoesNotExist:
         return redirect('home')
 
-    data = Notification.objects.filter(supervisor=supervisor).order_by('-date_time')
+    notifications = Notification.objects.filter(
+        supervisor=supervisor
+    ).order_by('-date_time')
 
-    return render(request, 'supervisor/notification_view.html', {'data': data})
+    return render(request,'supervisor/notification_view.html',{
+        'data':notifications
+    })
 
 def supervisor_requests(request):
 
@@ -117,7 +136,4 @@ def reject_work(request, id):
 
     return redirect('supervisor_works')
 
-def client_complaint(request):
-    supervisor = request.user.supervisor
-    data = Complaint.objects.filter(supervisor=supervisor)
-    return render(request, 'supervisor/complaint.html', {'data': data})
+

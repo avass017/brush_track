@@ -1,0 +1,15 @@
+{% for a in assignments %}
+
+<tr>
+<td>{{a.work.work_type}}</td>
+<td>{{a.work.location}}</td>
+<td>{{a.work.status}}</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="3">No work assigned</td>
+</tr>
+
+{% endfor %}

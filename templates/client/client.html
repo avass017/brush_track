@@ -1,225 +1,345 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enterprise HR Dashboard</title>
+
+<title>Client Dashboard</title>
 
 <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
 
 <style>
 
-/* ================= GOOGLE FONT ================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-:root {
-    --primary: #2563eb;
-    --gradient: linear-gradient(180deg, #3b82f6, #6366f1);
-    --sidebar-bg: #0f172a;
-    --sidebar-hover: rgba(255,255,255,0.06);
-    --text-light: #94a3b8;
-    --bg-main: #f1f5f9;
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: var(--bg-main);
-    color: #0f172a;
-    overflow-x: hidden;
+body{
+font-family:'Poppins',sans-serif;
+background:#eef2f7;
+display:flex;
 }
 
-/* ================= SIDEBAR ================= */
-.sidebar {
-    position: fixed;
-    width: 250px;
-    height: 100vh;
-    background: var(--sidebar-bg);
-    padding-top: 25px;
-    transition: all 0.4s ease;
+/* SIDEBAR */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:linear-gradient(180deg,#1e293b,#0f172a);
+color:white;
+position:fixed;
+top:0;
+left:0;
+display:flex;
+flex-direction:column;
+padding-top:30px;
+box-shadow:4px 0 20px rgba(0,0,0,0.15);
 }
 
-.sidebar-header {
-    text-align: center;
-    color: white;
-    font-weight: 600;
-    font-size: 18px;
-    letter-spacing: 0.5px;
-    margin-bottom: 45px;
+.sidebar-header{
+text-align:center;
+font-size:22px;
+font-weight:600;
+margin-bottom:40px;
+letter-spacing:1px;
 }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
+.sidebar ul{
+list-style:none;
+padding:0;
 }
 
-.sidebar ul li {
-    position: relative;
-    margin: 6px 0;
+.sidebar ul li{
+padding:15px 25px;
+transition:0.3s;
 }
 
-.sidebar ul li a {
-    display: flex;
-    align-items: center;
-    padding: 14px 22px;
-    color: var(--text-light);
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+.sidebar ul li a{
+text-decoration:none;
+color:#cbd5f5;
+display:flex;
+align-items:center;
+font-size:15px;
 }
 
-.sidebar ul li a i {
-    margin-right: 14px;
-    font-size: 20px;
+.sidebar ul li a i{
+margin-right:12px;
+font-size:22px;
 }
 
-/* Smooth Hover Slide */
-.sidebar ul li a:hover {
-    background: var(--sidebar-hover);
-    color: #fff;
-    transform: translateX(6px);
+.sidebar ul li:hover{
+background:#2563eb;
+padding-left:35px;
+border-radius:6px;
 }
 
-/* ===== Gradient Animated Active Indicator ===== */
-.sidebar ul li.active::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 10%;
-    height: 80%;
-    width: 5px;
-    border-radius: 0 6px 6px 0;
-    background: var(--gradient);
-    animation: glowBar 2s infinite alternate;
+/* MAIN SECTION */
+
+.main{
+margin-left:250px;
+width:100%;
 }
 
-@keyframes glowBar {
-    from { box-shadow: 0 0 6px #3b82f6; }
-    to { box-shadow: 0 0 18px #6366f1; }
+/* NAVBAR */
+
+.navbar{
+height:70px;
+background:white;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 40px;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+position:fixed;
+left:250px;
+right:0;
+top:0;
+z-index:100;
 }
 
-/* ================= NAVBAR ================= */
-.navbar {
-    position: fixed;
-    left: 250px;
-    right: 0;
-    top: 0;
-    height: 75px;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    box-shadow: 0 10px 35px rgba(0,0,0,0.05);
-    z-index: 100;
+.nav-right{
+display:flex;
+align-items:center;
+gap:25px;
 }
 
-.navbar-title {
-    font-weight: 600;
-    font-size: 18px;
+/* 🔔 NOTIFICATION */
+
+.notification{
+position:relative;
+cursor:pointer;
 }
 
-.profile-box {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+.notification i{
+font-size:28px;
+color:#334155;
+transition:0.3s;
 }
 
-.btn-logout {
-    background: var(--primary);
-    border: none;
-    padding: 8px 18px;
-    border-radius: 8px;
-    color: white;
-    font-weight: 500;
-    transition: 0.3s ease;
+.notification:hover i{
+color:#2563eb;
 }
 
-.btn-logout:hover {
-    background: #1d4ed8;
-    transform: translateY(-2px);
+/* BADGE */
+
+.notification-badge{
+position:absolute;
+top:-6px;
+right:-8px;
+background:red;
+color:white;
+font-size:10px;
+padding:3px 6px;
+border-radius:50%;
 }
 
-/* ================= CONTENT ================= */
-.content {
-    margin-left: 250px;
-    padding: 120px 50px 50px 50px;
+/* DROPDOWN */
+
+.notification-dropdown{
+position:absolute;
+top:40px;
+right:-10px;
+width:300px;
+background:white;
+border-radius:8px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+display:none;
+animation:fade 0.3s;
+overflow:hidden;
 }
 
-/* Animated Fade-In */
-.card {
-    background: white;
-    border-radius: 16px;
-    padding: 35px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.6s ease;
+.notification-dropdown ul{
+list-style:none;
+margin:0;
+padding:0;
+max-height:300px;
+overflow-y:auto;
 }
 
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 50px rgba(0,0,0,0.08);
+.notification-dropdown ul li{
+padding:12px 16px;
+border-bottom:1px solid #eee;
+font-size:14px;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.notification-dropdown ul li:hover{
+background:#f1f5f9;
 }
 
-/* ================= FOOTER ================= */
-.footer {
-    margin-top: 60px;
-    text-align: center;
-    font-size: 14px;
-    color: #64748b;
-    padding-bottom: 20px;
+@keyframes fade{
+from{opacity:0;transform:translateY(-10px);}
+to{opacity:1;transform:translateY(0);}
 }
+
+/* LOGOUT */
+
+.logout-btn{
+background:#2563eb;
+border:none;
+color:white;
+padding:8px 16px;
+border-radius:6px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.logout-btn:hover{
+background:#1d4ed8;
+}
+
+/* CONTENT */
+
+.content{
+margin-top:90px;
+padding:40px;
+}
+
+.content-card{
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+animation:fadeIn 0.6s;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(15px);}
+to{opacity:1;transform:translateY(0);}
+}
+
 </style>
+
 </head>
+
 <body>
 
-<!-- ===== SIDEBAR ===== -->
+<!-- SIDEBAR -->
+
 <div class="sidebar">
-    <div class="sidebar-header">HR Enterprise</div>
-    <ul>
-         <li><a href="{% url 'client_profile'%}"><i class="mdi mdi-account-group"></i>profile</a></li>
-        <li><a href="{% url 'supervisor_view'%}"><i class="mdi mdi-account-group"></i>Availables</a></li>
-        <li><a href="{% url 'client_notifications' %}"><i class="mdi mdi-alert-circle"></i>notification</a></li>
 
-
-
-    </ul>
+<div class="sidebar-header">
+Painting System
 </div>
 
-<!-- ===== NAVBAR ===== -->
+<ul>
+
+<li>
+<a href="{% url 'client_profile'%}">
+<i class="mdi mdi-account"></i>
+Profile
+</a>
+</li>
+
+<li>
+<a href="{% url 'supervisor_view'%}">
+<i class="mdi mdi-account-group"></i>
+Supervisors
+</a>
+</li>
+
+<li>
+<a href="{% url 'my_works'%}">
+<i class="mdi mdi-briefcase"></i>
+My Works
+</a>
+</li>
+
+</ul>
+
+</div>
+
+<!-- MAIN AREA -->
+
+<div class="main">
+
+<!-- NAVBAR -->
+
 <div class="navbar">
-    <h4>Welcome, {{ request.user }}</h4>
-    <a href="">
-        <button class="btn-logout">Logout</button>
-    </a>
+
+<h4>Welcome {{ request.user }}</h4>
+
+<div class="nav-right">
+
+<!-- 🔔 Notification -->
+
+<div class="notification" onclick="toggleNotification()">
+ <a href="{% url 'client_notifications' %}">
+<i class="mdi mdi-bell-outline"></i>
+
+<span class="notification-badge">
+
+</span> </a>
+
+<div class="notification-dropdown" id="notifyMenu">
+
+<ul>
+
+{% for n in notifications %}
+
+<li>
+{{ n.message }}
+</li>
+
+{% empty %}
+
+<li>No notifications</li>
+
+{% endfor %}
+
+</ul>
+
 </div>
 
-<!-- ===== CONTENT ===== -->
+</div>
+
+<!-- Logout -->
+
+<a href="#">
+<button class="logout-btn">Logout</button>
+</a>
+
+</div>
+
+</div>
+
+<!-- CONTENT -->
+
 <div class="content">
 
-    <div class="content-card">
-        {% block content %}
-        {% endblock %}
-    </div>
+<div class="content-card">
 
+{% block content %}
+{% endblock %}
 
 </div>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleNotification(){
+
+let menu=document.getElementById("notifyMenu");
+
+if(menu.style.display==="block"){
+menu.style.display="none";
+}
+else{
+menu.style.display="block";
+}
+
+}
+
+</script>
 
 </body>
 </html>

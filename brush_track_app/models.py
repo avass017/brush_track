@@ -129,9 +129,18 @@ class Rating(models.Model):
     def __str__(self):
         return f"{self.client} rated {self.supervisor} - {self.rating}"
 
-class Complaint(models.Model):
-    complaint_details = models.ForeignKey("Client", on_delete=models.CASCADE)
-    supervisor = models.ForeignKey("Supervisor", on_delete=models.CASCADE)
-    subject = models.CharField(max_length=200)
-    date = models.DateField(default=timezone.now)
 
+
+
+
+class WorkStatusUpdate(models.Model):
+
+    work = models.ForeignKey("Work", on_delete=models.CASCADE)
+
+    status = models.CharField(max_length=100)
+
+    progress_percentage = models.IntegerField()
+
+    message = models.TextField(blank=True)
+
+    updated_at = models.DateTimeField(auto_now_add=True)

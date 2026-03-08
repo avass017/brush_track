@@ -1,0 +1,178 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+
+<style>
+
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:25px;
+    color:#0f172a;
+}
+
+/* GRID */
+.work-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:20px;
+}
+
+/* CARD */
+.work-card{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 6px 25px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.work-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 35px rgba(0,0,0,0.12);
+}
+
+/* HEADER */
+.work-header{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:12px;
+}
+
+/* DETAILS */
+.work-details{
+    font-size:14px;
+    color:#475569;
+    line-height:1.7;
+}
+
+.work-details span{
+    font-weight:600;
+    color:#0f172a;
+}
+
+/* STATUS BADGE */
+.status{
+    margin-top:14px;
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* STATUS COLORS */
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.accepted{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.completed{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.rejected{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+/* BUTTONS */
+
+.action-btn{
+    padding:7px 14px;
+    border-radius:6px;
+    font-size:13px;
+    text-decoration:none;
+    color:white;
+    display:inline-block;
+    margin-top:10px;
+}
+
+.accept-btn{
+    background:#16a34a;
+}
+
+.reject-btn{
+    background:#dc2626;
+    margin-left:6px;
+}
+
+</style>
+
+
+<div class="page-title">
+My Works
+</div>
+
+
+<div class="work-grid">
+
+{% for work in works %}
+
+<div class="work-card">
+
+<div class="work-header">
+{{ work.work_type }} Painting
+</div>
+
+<div class="work-details">
+
+<div><span>Client :</span> {{ work.client }}</div>
+
+<div><span>Location :</span> {{ work.location }}</div>
+
+<div><span>Area :</span> {{ work.square_feet }} sqft</div>
+
+<div><span>Paint Type :</span> {{ work.paint_type }}</div>
+
+<div><span>Budget :</span> ₹ {{ work.budget }}</div>
+
+<div><span>Start Date :</span> {{ work.start_date }}</div>
+
+<div><span>Expected Finish :</span> {{ work.expected_finish_date }}</div>
+
+</div>
+
+
+<!-- STATUS & ACTIONS -->
+
+{% if work.status == "Pending" %}
+
+<div class="status pending">Pending Approval</div>
+
+<br>
+
+
+
+{% elif work.status == "Accepted" %}
+
+<div class="status accepted">Accepted</div>
+
+{% elif work.status == "Rejected" %}
+
+<div class="status rejected">Rejected</div>
+
+{% elif work.status == "Completed" %}
+
+<div class="status completed">Completed</div>
+
+{% endif %}
+
+</div>
+
+{% empty %}
+
+<p>No Work Assigned</p>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

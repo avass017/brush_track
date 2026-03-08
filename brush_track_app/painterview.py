@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 
-from brush_track_app.models import Painter, Notification
+from brush_track_app.models import Painter, Notification, Work
 
 
 def painter_profile(request):
