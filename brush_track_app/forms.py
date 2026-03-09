@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
 from brush_track_app.models import Login, Client, Supervisor, Painter, Notification, FollowRequest, Work, Rating, \
-    WorkStatusUpdate, WorkAssign
+    WorkStatusUpdate, WorkAssign, ClientMessage
 
 
 class LoginRegister(UserCreationForm):
@@ -150,4 +150,15 @@ class WorkAssignForm(forms.ModelForm):
             'work_type': forms.Select(attrs={'class': 'form-control'}),
             'area': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+
+class ClientMessageForm(forms.ModelForm):
+    class Meta:
+        model = ClientMessage
+        fields = ['work','paint_status','reason','feedback']
+        widgets = {
+            'reason': forms.Textarea(attrs={'rows':2,'placeholder':'Reason if paint not purchased'}),
+            'feedback': forms.Textarea(attrs={'rows':2,'placeholder':'Feedback for client'}),
         }

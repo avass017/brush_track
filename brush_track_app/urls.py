@@ -1,6 +1,6 @@
 from django.urls import path
 
-from brush_track_app import views, clientview, superview, painterview
+from brush_track_app import views, clientview, superview, painterview, adminview
 
 urlpatterns = [
 path('',views.index,name='index'),
@@ -42,11 +42,14 @@ path('work-status/<int:id>/', clientview.work_status, name='work_status'),
 path('Log_out_client',clientview.Log_out_client,name='Log_out_client'),
     path('client_dashboard',clientview.client_dashboard,name='client_dashboard'),
 
-
-
-
-
-
-
+path('client_view',adminview.client_view,name='client_view'),
+path('supervisors_view',adminview.supervisors_view,name='supervisors_view'),
+path('client_delete/<int:id>/',adminview.client_delete,name='client_delete'),
+path('super_delete/<int:id>/',adminview.super_delete,name='super_delete'),
+path('supervisor_dashboard',superview.supervisor_dashboard,name='supervisor_dashboard'),
+path('super_update/<int:id>/', superview.super_update, name='super_update'),
+path('supervisor/send_message/<int:client_id>/',superview.send_message_to_client, name='send_message_to_client'),
+    path('client/messages/', clientview.client_messages, name='client_messages'),
+path('client_update/<int:id>/',clientview.client_update,name='client_update'),
 ]
 

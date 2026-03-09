@@ -1,7 +1,8 @@
 from django.db.models import Avg
 from django.shortcuts import render, redirect
 
-from brush_track_app.forms import NotificationRegister, WorkStatusUpdateRegister, WorkAssignForm
+from brush_track_app.forms import NotificationRegister, WorkStatusUpdateRegister, WorkAssignForm, supervisorRegister, \
+    ClientMessageForm
 from brush_track_app.models import Supervisor, Painter, Notification, FollowRequest, Work, Rating, Client, \
     WorkStatusUpdate, WorkAssign
 
@@ -203,3 +204,71 @@ def supervisor_assigned_works(request):
     return render(request,'supervisor/assigned_works.html',{
         'assigned_works':assigned_works
     })
+
+
+def supervisor_dashboard(request):
+
+    supervisor = Supervisor.objects.get(supervisor_details=request.user)
+
+    painters_count = Painter.objects.filter(supervisor=supervisor).count()
+
+    requests = FollowRequest.objects.filter(supervisor=supervisor)
+
+    pending_requests = requests.filter(status="Pending").count()
+
+    works = Work.objects.filter(supervisor=supervisor)
+
+    total_works = works.count()
+
+    completed_works = works.filter(status="Completed").count()
+
+    assigned_works = WorkAssign.objects.filter(supervisor=supervisor)
+
+    notifications = Notification.objects.filter(supervisor=supervisor).order_by("-date_time")[:5]
+
+    avg_rating = Rating.objects.filter(
+        supervisor=supervisor
+    ).aggregate(Avg("rating"))["rating__avg"]
+
+    context = {
+        "painters_count": painters_count,
+        "pending_requests": pending_requests,
+        "total_works": total_works,
+        "completed_works": completed_works,
+        "assigned_works": assigned_works[:5],
+        "notifications": notifications,
+        "avg_rating": avg_rating,
+    }
+
+    return render(request,"supervisor/dashboard.html",context)
+
+def super_update(request,id):
+    pas_up=Supervisor.objects.get(id=id)
+
+    if request.method == "POST":
+        up_form = supervisorRegister(request.POST,instance=pas_up)
+        if up_form.is_valid():
+            up_form.save()
+            return redirect('supervisor_profile')
+    else:
+        up_form = supervisorRegister(instance=pas_up)
+    return render(request,'supervisor/supdate.html',{'data':up_form})
+
+def send_message_to_client(request, client_id):
+    client = Client.objects.filter(id=client_id).first()
+    supervisor = getattr(request.user, 'supervisor', None)
+
+    if not client or not supervisor:
+        return render(request, 'supervisor/error.html', {
+            'message': 'Client or supervisor not found!'
+        })
+
+    form = ClientMessageForm(request.POST or None)
+    if form.is_valid():
+        msg = form.save(commit=False)
+        msg.client = client
+        msg.supervisor = supervisor
+        msg.save()
+        return redirect('supervisor_dashboard')
+
+    return render(request, 'supervisor/send_message.html', {'form': form, 'client': client})

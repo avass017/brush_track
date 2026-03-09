@@ -1,0 +1,191 @@
+{% extends "supervisor/super.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid py-5" style="background:#f4f6fb; min-height:100vh;">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+
+            <!-- Card -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="profile-header text-center text-white">
+                    <div class="avatar-container">
+
+                        {% if data.document %}
+                        <img src="{{ data.document.url }}" class="avatar-img">
+                        {% else %}
+                        <div class="avatar-img d-flex align-items-center justify-content-center bg-white">
+                            <i class="mdi mdi-account text-primary" style="font-size:55px;"></i>
+                        </div>
+                        {% endif %}
+
+                        <label class="avatar-edit">
+                            <i class="mdi mdi-pencil"></i>
+                            <input type="file" name="document" hidden>
+                        </label>
+
+                    </div>
+
+                    <h4 class="fw-bold mt-3">Edit Profile</h4>
+                    <p class="small opacity-75 mb-0">Update your supervisor account information</p>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-5 pt-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-section">
+                            {% for field in data %}
+                            <div class="form-floating mb-3">
+                                {{ field }}
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'supervisor_profile' %}" class="btn btn-light border px-4">
+                                <i class="mdi mdi-arrow-left"></i> Back
+                            </a>
+
+                            <button type="submit" class="btn gradient-btn px-5">
+                                <i class="mdi mdi-content-save"></i> Save Changes
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+/* Card Header */
+.profile-header {
+    background: linear-gradient(135deg,#4f46e5,#2563eb);
+    padding:70px 20px 50px;
+    border-radius:16px 16px 0 0;
+    position:relative;
+    transition:0.3s;
+}
+
+/* Avatar */
+.avatar-container {
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:-55px;
+}
+
+.avatar-img {
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid white;
+    box-shadow:0 6px 20px rgba(0,0,0,0.2);
+    transition:0.3s;
+}
+
+.avatar-img:hover {
+    transform:scale(1.05);
+}
+
+.avatar-edit {
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    background:#4f46e5;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+    transition:0.2s;
+}
+
+.avatar-edit:hover {
+    background:#2563eb;
+}
+
+/* Form Inputs */
+.form-section .form-floating input,
+.form-section .form-floating select,
+.form-section .form-floating textarea {
+    height:50px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    background:#f9f9f9;
+    padding:1rem 0.75rem 0.25rem;
+    transition:all 0.2s;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.form-section .form-floating label {
+    font-weight:500;
+    color:#6c757d;
+    pointer-events:none;
+    transition:all 0.2s;
+}
+
+.form-section .form-floating input:focus,
+.form-section .form-floating select:focus,
+.form-section .form-floating textarea:focus {
+    border-color:#4f46e5;
+    box-shadow:0 0 0 0.15rem rgba(79,70,229,.25);
+    background:#fff;
+}
+
+.form-section .form-floating input:focus + label,
+.form-section .form-floating textarea:focus + label,
+.form-section .form-floating select:focus + label,
+.form-section .form-floating input:not(:placeholder-shown) + label {
+    transform:translateY(-1.5rem);
+    font-size:0.85rem;
+    color:#4f46e5;
+}
+
+/* Buttons */
+.gradient-btn {
+    background: linear-gradient(135deg,#4f46e5,#2563eb);
+    border-radius:8px;
+    color:white;
+    font-weight:500;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gradient-btn:hover {
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* Card Body spacing */
+.card-body {
+    margin-top:60px;
+}
+
+/* Responsive adjustments */
+@media(max-width:768px){
+    .card-body { padding:2rem 1.5rem; }
+    .avatar-container { bottom:-50px; }
+}
+</style>
+
+{% endblock %}

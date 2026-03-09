@@ -176,11 +176,12 @@ body {
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
 
-    <div class="sidebar-header">HR Enterprise</div>
+    <div class="sidebar-header">Welcome supervisors</div>
     <ul>
+                 <li><a href="{% url 'supervisor_dashboard'%}"><i class="mdi mdi-account-group"></i>All View</a></li>
+
          <li><a href="{% url 'supervisor_profile'%}"><i class="mdi mdi-account-group"></i>profile</a></li>
         <li><a href="{% url 'painters_view'%}"><i class="mdi mdi-account-group"></i>my painters</a></li>
-        <li><a href="{% url 'notification'%}"><i class="mdi mdi-calendar-clock"></i>Notification</a></li>
         <li><a href="{% url 'supervisor_requests'%}"><i class="mdi mdi-cash-multiple"></i>Request</a></li>
          <li><a href="{% url 'supervisor_works' %}"><i class="mdi mdi-cash-multiple"></i>Work list</a></li>
 

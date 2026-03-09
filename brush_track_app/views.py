@@ -26,13 +26,13 @@ def login_view(request):
                 return redirect('admin')
 
             elif user.is_client:
-                return redirect('client')
+                return redirect('client_dashboard')
 
             elif user.is_supervisor:
-                return redirect('supervisor')
+                return redirect('supervisor_dashboard')
 
             elif user.is_painter:
-                return redirect('painters')
+                return redirect('painter_profile')
 
 
         else:

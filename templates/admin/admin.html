@@ -193,13 +193,8 @@ body {
 <div class="sidebar">
     <div class="sidebar-header">HR Enterprise</div>
     <ul>
-         <li><a href=""><i class="mdi mdi-account-group"></i>Dash</a></li>
-        <li><a href=""><i class="mdi mdi-account-group"></i>my profile</a></li>
-        <li><a href=""><i class="mdi mdi-calendar-clock"></i>Worklist</a></li>
-        <li><a href=""><i class="mdi mdi-cash-multiple"></i>complaint</a></li>
-        <li><a href=""><i class="mdi mdi-alert-circle"></i>leave</a></li>
-        <li><a href=""><i class="mdi mdi-timer"></i>salary</a></li>
-                <li><a href=""><i class="mdi mdi-timer"></i>Overtime</a></li>
+         <li><a href="{% url 'client_view'%}"><i class="mdi mdi-account-group"></i>Clients</a></li>
+        <li><a href="{% url 'supervisors_view'%}"><i class="mdi mdi-account-group"></i>Supervisors</a></li>
 
 
     </ul>

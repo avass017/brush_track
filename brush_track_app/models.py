@@ -186,3 +186,19 @@ class Assignment(models.Model):
     painter = models.ForeignKey(Painter, on_delete=models.CASCADE)
 
     work = models.ForeignKey(Work, on_delete=models.CASCADE)
+
+class ClientMessage(models.Model):
+    supervisor = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE, null=True, blank=True)
+    paint_status_choices = [
+        ('purchased','Purchased'),
+        ('not_purchased','Not Purchased')
+    ]
+    paint_status = models.CharField(max_length=20, choices=paint_status_choices, default='not_purchased')
+    reason = models.TextField(blank=True)
+    feedback = models.TextField(blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Message to {self.client} for {self.work}"

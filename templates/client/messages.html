@@ -1,0 +1,22 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<h4>Messages from Supervisor</h4>
+<div class="dashboard-card p-3">
+
+<ul class="list-group">
+{% for msg in messages %}
+<li class="list-group-item">
+    <strong>Work:</strong> {{ msg.work }} <br>
+    <strong>Paint Status:</strong> {{ msg.paint_status|capfirst }} <br>
+    {% if msg.reason %}<strong>Reason:</strong> {{ msg.reason }}<br>{% endif %}
+    {% if msg.feedback %}<strong>Feedback:</strong> {{ msg.feedback }}<br>{% endif %}
+    <small>{{ msg.created_at }}</small>
+</li>
+{% empty %}
+<li class="list-group-item text-muted">No messages yet.</li>
+{% endfor %}
+</ul>
+
+</div>
+{% endblock %}

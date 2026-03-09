@@ -4,23 +4,19 @@
 {% block content %}
 
 <style>
-
 /* HEADER */
-
 .header-bar{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:25px;
 }
-
 .page-title{
 font-size:24px;
 font-weight:600;
 }
 
 /* STAR BUTTON */
-
 .review-btn{
 font-size:22px;
 cursor:pointer;
@@ -30,16 +26,13 @@ padding:6px 11px;
 color:#f59e0b;
 transition:0.3s;
 }
-
 .review-btn:hover{
 background:#f59e0b;
 color:white;
 }
 
 /* RIGHT REVIEW PANEL */
-
 .review-panel{
-
 position:fixed;
 top:0;
 right:-420px;
@@ -51,22 +44,18 @@ padding:25px;
 overflow-y:auto;
 transition:0.4s;
 z-index:1000;
-
 }
-
 .review-panel.active{
 right:0;
 }
 
 /* PANEL HEADER */
-
 .review-header{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:20px;
 }
-
 .close-btn{
 cursor:pointer;
 font-size:22px;
@@ -74,7 +63,6 @@ font-weight:600;
 }
 
 /* REVIEW CARD */
-
 .review-card{
 background:#f9fafb;
 padding:14px;
@@ -82,18 +70,16 @@ border-radius:10px;
 margin-bottom:12px;
 box-shadow:0 3px 10px rgba(0,0,0,0.05);
 }
-
 .review-rating{
 color:#f59e0b;
 font-weight:600;
 }
 
 /* REQUEST LIST */
-
 .request-container{
-max-width:700px;
+max-width:750px;
+margin:auto;
 }
-
 .request-card{
 display:flex;
 align-items:center;
@@ -105,19 +91,16 @@ margin-bottom:14px;
 box-shadow:0 4px 18px rgba(0,0,0,0.08);
 transition:0.3s;
 }
-
 .request-card:hover{
 transform:translateY(-3px);
 }
 
 /* CLIENT INFO */
-
 .client-info{
 display:flex;
 align-items:center;
 gap:14px;
 }
-
 .profile-avatar{
 width:50px;
 height:50px;
@@ -125,7 +108,6 @@ border-radius:50%;
 object-fit:cover;
 border:2px solid #eee;
 }
-
 .avatar-placeholder{
 width:50px;
 height:50px;
@@ -137,33 +119,23 @@ align-items:center;
 justify-content:center;
 font-weight:600;
 }
-
 .client-name{
 font-weight:600;
 }
 
 /* STATUS */
-
 .status{
 font-size:13px;
 margin-top:3px;
 }
-
-.accepted{
-color:#16a34a;
-}
-
-.rejected{
-color:#dc2626;
-}
+.accepted{color:#16a34a;}
+.rejected{color:#dc2626;}
 
 /* BUTTONS */
-
 .action-buttons{
 display:flex;
 gap:8px;
 }
-
 .btn{
 padding:7px 16px;
 border-radius:7px;
@@ -171,174 +143,99 @@ font-size:13px;
 text-decoration:none;
 font-weight:600;
 }
-
 .btn-accept{
 background:#0095f6;
 color:white;
 }
-
-.btn-accept:hover{
-background:#0077cc;
-}
-
+.btn-accept:hover{background:#0077cc;}
 .btn-reject{
 background:#efefef;
 color:#333;
 }
-
-.btn-reject:hover{
-background:#ddd;
+.btn-reject:hover{background:#ddd;}
+.btn-message{
+background:#10b981;
+color:white;
+}
+.btn-message:hover{
+background:#059669;
 }
 
 </style>
 
-
 <!-- HEADER -->
-
 <div class="header-bar">
-
-<div class="page-title">
-Client Requests
+    <div class="page-title">Client Requests</div>
+    <div class="review-btn" onclick="openReviews()">☆</div>
 </div>
-
-<div class="review-btn" onclick="openReviews()">
-☆
-</div>
-
-</div>
-
 
 <!-- RIGHT SIDE REVIEW PANEL -->
-
 <div class="review-panel" id="reviewPanel">
+    <div class="review-header">
+        <h3>⭐ {{ avg_rating|default:"0"|floatformat:1 }} / 5</h3>
+        <div class="close-btn" onclick="closeReviews()">✕</div>
+    </div>
 
-<div class="review-header">
-
-<h3>
-⭐ {{ avg_rating|default:"0"|floatformat:1 }} / 5
-</h3>
-
-<div class="close-btn" onclick="closeReviews()">
-✕
+    {% for r in reviews %}
+    <div class="review-card">
+        <strong>{{ r.client }}</strong><br>
+        <span class="review-rating">⭐ {{ r.rating }} / 5</span><br><br>
+        {{ r.review }}
+    </div>
+    {% empty %}
+    <p>No Reviews Yet</p>
+    {% endfor %}
 </div>
-
-</div>
-
-
-{% for r in reviews %}
-
-<div class="review-card">
-
-<strong>{{ r.client }}</strong>
-
-<br>
-
-<span class="review-rating">
-⭐ {{ r.rating }} / 5
-</span>
-
-<br><br>
-
-{{ r.review }}
-
-</div>
-
-{% empty %}
-
-<p>No Reviews Yet</p>
-
-{% endfor %}
-
-</div>
-
-
 
 <!-- CLIENT REQUEST LIST -->
-
 <div class="request-container">
 
 {% for i in data %}
-
 <div class="request-card">
 
-<div class="client-info">
+    <div class="client-info">
+        {% if i.client.document %}
+        <img src="{{ i.client.document.url }}" class="profile-avatar">
+        {% else %}
+        <div class="avatar-placeholder">{{ i.client.name|first|upper }}</div>
+        {% endif %}
+        <div>
+            <div class="client-name">{{ i.client.name }}</div>
+            {% if i.status == "Accepted" %}
+            <div class="status accepted">Request Accepted</div>
+            {% elif i.status == "Rejected" %}
+            <div class="status rejected">Request Rejected</div>
+            {% else %}
+            <div class="status">Pending</div>
+            {% endif %}
+        </div>
+    </div>
 
-{% if i.client.document %}
-<img src="{{ i.client.document.url }}" class="profile-avatar">
-{% else %}
-<div class="avatar-placeholder">
-{{ i.client|first|upper }}
-</div>
-{% endif %}
+    <div class="action-buttons">
 
-<div>
+        {% if i.status == "Pending" %}
+        <a href="{% url 'accept_request' i.id %}" class="btn btn-accept">Accept</a>
+        <a href="{% url 'reject_request' i.id %}" class="btn btn-reject">Reject</a>
+        {% endif %}
 
-<div class="client-name">
-{{ i.client }}
-</div>
+        {% if i.status != "Rejected" %}
+        <!-- Send Message Button -->
+        <a href="{% url 'send_message_to_client' i.client.id %}"
+           class="btn btn-message">Send Message</a>
+        {% endif %}
 
-{% if i.status == "Accepted" %}
-<div class="status accepted">Request Accepted</div>
-
-{% elif i.status == "Rejected" %}
-<div class="status rejected">Request Rejected</div>
-{% endif %}
-
-</div>
-
-</div>
-
-
-<div class="action-buttons">
-
-{% if i.status == "Pending" %}
-
-<a href="{% url 'accept_request' i.id %}" class="btn btn-accept">
-Accept
-</a>
-
-<a href="{% url 'reject_request' i.id %}" class="btn btn-reject">
-Reject
-</a>
-
-{% elif i.status == "Accepted" %}
-
-
-
-{% else %}
-
-<span class="status rejected">Rejected</span>
-
-{% endif %}
+    </div>
 
 </div>
-
-</div>
-
 {% empty %}
-
 <p>No Client Requests</p>
-
 {% endfor %}
 
 </div>
 
-
-
 <script>
-
-function openReviews(){
-
-document.getElementById("reviewPanel").classList.add("active")
-
-}
-
-function closeReviews(){
-
-document.getElementById("reviewPanel").classList.remove("active")
-
-}
-
+function openReviews(){document.getElementById("reviewPanel").classList.add("active")}
+function closeReviews(){document.getElementById("reviewPanel").classList.remove("active")}
 </script>
 
 {% endblock %}

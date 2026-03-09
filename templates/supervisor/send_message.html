@@ -1,0 +1,13 @@
+{% extends "supervisor/super.html" %}
+
+{% block content %}
+<div class="dashboard-card" style="max-width:600px;margin:auto;">
+    <h4>Send Message to {{ client.name }}</h4>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-2">Send Message</button>
+    </form>
+</div>
+{% endblock %}

@@ -3,9 +3,9 @@ from django.db.models import Avg
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
-from brush_track_app.forms import WorkRegister, RatingRegister
+from brush_track_app.forms import WorkRegister, RatingRegister, clientRegister
 from brush_track_app.models import Client, Supervisor, FollowRequest, Notification, Work, Rating, \
-    WorkStatusUpdate
+    WorkStatusUpdate, ClientMessage
 
 
 def client_profile(request):
@@ -185,3 +185,22 @@ def client_dashboard(request):
     }
 
     return render(request, "client/client_dashboard.html", context)
+
+def client_messages(request):
+    client = request.user.client
+    messages = ClientMessage.objects.filter(client=client).order_by('-created_at')
+    return render(request,'client/messages.html',{'messages':messages})
+
+
+
+def client_update(request,id):
+    pas_up=Client.objects.get(id=id)
+
+    if request.method == "POST":
+        up_form = clientRegister(request.POST,instance=pas_up)
+        if up_form.is_valid():
+            up_form.save()
+            return redirect('client_profile')
+    else:
+        up_form = clientRegister(instance=pas_up)
+    return render(request,'client/cupdate.html',{'data':up_form})

@@ -1,0 +1,64 @@
+{% extends "supervisor/super.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card border-0 shadow">
+
+                <!-- Header -->
+                <div class="card-header bg-gradient bg-primary text-white text-center py-4">
+                    <i class="mdi mdi-account-circle" style="font-size:50px;"></i>
+                    <h3 class="mt-2 mb-0">Edit Supervisor Profile</h3>
+                    <small class="opacity-75">Update your account information</small>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-5">
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            <!-- Form Fields -->
+                            <div class="col-12">
+                                {{ data|crispy }}
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+
+                            <a href="{% url 'supervisor_profile' %}"
+                               class="btn btn-outline-secondary px-4">
+                                <i class="mdi mdi-arrow-left"></i> Back
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-success px-5">
+                                <i class="mdi mdi-content-save"></i>
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
