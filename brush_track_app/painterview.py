@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 
 
@@ -23,3 +24,7 @@ def painter_notifications(request):
 def painter_assigned_works(request):
     assignments = WorkAssign.objects.all()  # എല്ലാ assignment-കളും fetch ചെയ്യുന്നു
     return render(request, "painter/painter_assigned_works.html", {"assignments": assignments})
+
+def Log_out_painter(request):
+    logout(request)
+    return redirect('login_view')

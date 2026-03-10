@@ -36,12 +36,11 @@ path('client_notifications/',clientview.client_notifications,name="client_notifi
 path("add_rating/<int:id>/",clientview.add_rating,name="add_rating"),
 path('supervisor_works/', superview.supervisor_works, name='supervisor_works'),
 path('add_work_status_update/<int:id>/', superview.add_work_status_update, name='add_work_status_update'),
-path('assign-work/<int:id>/', superview.assign_painter, name='assign_work'),
+path('assign-painter/<int:id>/', superview.assign_painter, name='assign-painter'),
 path('assigned-works/', superview.supervisor_assigned_works, name='assigned_works'),
 path('work-status/<int:id>/', clientview.work_status, name='work_status'),
 path('Log_out_client',clientview.Log_out_client,name='Log_out_client'),
     path('client_dashboard',clientview.client_dashboard,name='client_dashboard'),
-
 path('client_view',adminview.client_view,name='client_view'),
 path('supervisors_view',adminview.supervisors_view,name='supervisors_view'),
 path('client_delete/<int:id>/',adminview.client_delete,name='client_delete'),
@@ -51,5 +50,9 @@ path('super_update/<int:id>/', superview.super_update, name='super_update'),
 path('supervisor/send_message/<int:client_id>/',superview.send_message_to_client, name='send_message_to_client'),
     path('client/messages/', clientview.client_messages, name='client_messages'),
 path('client_update/<int:id>/',clientview.client_update,name='client_update'),
+path('Log_out_painter',painterview.Log_out_painter,name='Log_out_painter'),
+path('Log_out_super',superview.Log_out_super,name='Log_out_super'),
+
+
 ]
 

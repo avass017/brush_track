@@ -85,17 +85,12 @@ Assigned Works
 </div>
 
 
-<!-- TOP LEFT BUTTON -->
+<!-- ASSIGN WORK BUTTON -->
 
 <div class="top-bar">
 
-{% for i in assigned_works %}
-
-<a href="{% url 'assign_work' i.work.id %}" class="action-btn assign-btn">
 <i class="mdi mdi-cash-multiple"></i> Assign Work
 </a>
-
-{% endfor %}
 
 </div>
 
@@ -110,7 +105,6 @@ Assigned Works
     <th>Area</th>
     <th>Status</th>
     <th>Date</th>
-
 </tr>
 
 {% for work in assigned_works %}
@@ -135,14 +129,14 @@ Assigned Works
 
 <td>{{ work.assigned_date }}</td>
 
-
+    <td><a href="{% url 'assign-painter' work.id %}" class="action-btn assign-btn">assign</td>
 
 </tr>
 
 {% empty %}
 
 <tr>
-<td colspan="8">No Assigned Works</td>
+<td colspan="7">No Assigned Works</td>
 </tr>
 
 {% endfor %}

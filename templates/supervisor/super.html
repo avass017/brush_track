@@ -205,7 +205,7 @@ body {
 <!-- ===== NAVBAR ===== -->
 <div class="navbar">
     <h4>Welcome, {{ request.user }}</h4>
-    <a href="">
+    <a href="{% url 'Log_out_super' %}">
         <button class="btn-logout">Logout</button>
     </a>
 </div>

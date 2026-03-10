@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.db.models import Avg
 from django.shortcuts import render, redirect
 
@@ -185,7 +186,7 @@ def assign_painter(request, id):
             assign.supervisor = supervisor
             assign.save()
 
-            return redirect('supervisor_assigned_works')
+            return redirect('supervisor_works')
 
     else:
         form = WorkAssignForm()
@@ -272,3 +273,7 @@ def send_message_to_client(request, client_id):
         return redirect('supervisor_dashboard')
 
     return render(request, 'supervisor/send_message.html', {'form': form, 'client': client})
+
+def Log_out_super(request):
+    logout(request)
+    return redirect('login_view')
